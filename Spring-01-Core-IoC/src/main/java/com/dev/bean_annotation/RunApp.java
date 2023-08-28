@@ -12,7 +12,29 @@ public class RunApp {
         FullTimeMentor ft = container.getBean(FullTimeMentor.class);
         ft.createAccount();
 
+//        PartTimeMentor pt = container.getBean(PartTimeMentor.class);
+        PartTimeMentor pt = container.getBean("p1",PartTimeMentor.class);
+        pt.createAccount();
+
         String dev = container.getBean(String.class);
         System.out.println(dev);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
