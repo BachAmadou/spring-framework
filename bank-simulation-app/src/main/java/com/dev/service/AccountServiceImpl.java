@@ -27,11 +27,39 @@ public class AccountServiceImpl implements AccountService{
 
         // return the object created
 
-        return null;
+        return accountRepository.save(account);
     }
 
     @Override
     public List<Account> listAllAccount() {
-        return null;
+
+        return accountRepository.findAll();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
