@@ -4,10 +4,12 @@ import com.dev.enums.AccountType;
 import com.dev.exception.AccountOwnershipException;
 import com.dev.exception.BadRequestException;
 import com.dev.exception.BalanceNotSufficientException;
+import com.dev.exception.UnderConstructionException;
 import com.dev.model.Account;
 import com.dev.model.Transaction;
 import com.dev.repository.AccountRepository;
 import com.dev.repository.TransactionRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -18,6 +20,8 @@ import java.util.UUID;
 @Component
 public class TransactionServiceImpl implements TransactionService {
 
+    @Value("${under_construction}")
+    private boolean underConstruction;
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
 
@@ -29,23 +33,27 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction makeTransfer(Account sender, Account receiver, BigDecimal amount, Date createDate, String message) {
 
-        /*
-        * - if sender or receiver is null?
-        * - if sender and receiver is the same account?
-        * - if sender has enough balance to make the transfer?
-        * - if both the accounts are checking, if not one of them saving, it needs to be same Userid
-        * */
+        if(!underConstruction) {
+            /*
+             * - if sender or receiver is null?
+             * - if sender and receiver is the same account?
+             * - if sender has enough balance to make the transfer?
+             * - if both the accounts are checking, if not one of them saving, it needs to be same Userid
+             * */
 
-        validateAccount(sender, receiver);
-        checkAccountOwnership(sender, receiver);
-        executeBalanceAndUpdateIfRequired(amount, sender, receiver);
+            validateAccount(sender, receiver);
+            checkAccountOwnership(sender, receiver);
+            executeBalanceAndUpdateIfRequired(amount, sender, receiver);
 
-        // after all validations are completed, and money is transferred, we need to create transaction object and save/return it
-        Transaction transaction = Transaction.builder().amount(amount).sender(sender.getId())
-                .receiver(receiver.getId()).createDate(createDate).message(message).build();
+            // after all validations are completed, and money is transferred, we need to create transaction object and save/return it
+            Transaction transaction = Transaction.builder().amount(amount).sender(sender.getId())
+                    .receiver(receiver.getId()).createDate(createDate).message(message).build();
 
-        // makeTransfer
-        return transactionRepository.save(transaction);
+            // makeTransfer
+            return transactionRepository.save(transaction);
+        } else {
+            throw new UnderConstructionException("App is under construction, please try again later.");
+        }
     }
 
     private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
@@ -96,7 +104,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> findAllTransaction() {
-        return null;
+        return transactionRepository.findAll();
     }
 }
 
