@@ -3,12 +3,14 @@ package com.dev.service;
 import com.dev.enums.AccountType;
 import com.dev.model.Account;
 import com.dev.repository.AccountRepository;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Component
 public class AccountServiceImpl implements AccountService{
 
     AccountRepository accountRepository;
