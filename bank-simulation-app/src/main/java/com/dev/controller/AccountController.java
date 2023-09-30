@@ -1,5 +1,7 @@
 package com.dev.controller;
 
+import com.dev.enums.AccountType;
+import com.dev.model.Account;
 import com.dev.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,5 +26,14 @@ public class AccountController {
         return "account/index";
     }
 
+    @GetMapping("/create-form")
+    public String createAccount(Model model) {
+        // we need to provide an empty account object
+        model.addAttribute("account", Account.builder().build());
 
+        // we need to provide account type from enum to fill the dropdown options
+        model.addAttribute("accountTypes", AccountType.values());
+
+        return "account/create-account";
+    }
 }
