@@ -23,7 +23,7 @@ public class TransactionController {
         model.addAttribute("transaction", Transaction.builder().build());
 
         // provide hte list of all account
-        model.addAttribute("account", accountService.listAllAccount());
+        model.addAttribute("accounts", accountService.listAllAccount());
 
         // provide the list of last 10 transactions to fill the table
         model.addAttribute("lastTransactions", transactionService.last10Transactions());
