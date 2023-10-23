@@ -16,13 +16,10 @@ import java.util.UUID;
 
 @Controller
 public class AccountController {
-
     private final AccountService accountService;
-
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
-
     @GetMapping("/index")
     public String getIndexPage(Model model) {
 
@@ -43,7 +40,7 @@ public class AccountController {
     @PostMapping("/create")
     // we use @ModelAttribute("account") to get the account from the above createAccount method
     public String AddAccount(@ModelAttribute("account") Account account, Model model) {
-        System.out.println(account);
+//        System.out.println(account);
         accountService.createNewAccount(account.getBalance(),new Date(),account.getAccountType(),account.getUserId());
         return "redirect:/index";
     }
@@ -61,6 +58,5 @@ public class AccountController {
         accountService.activateAccount(id);
 
         return "redirect:/index";
-
     }
 }
