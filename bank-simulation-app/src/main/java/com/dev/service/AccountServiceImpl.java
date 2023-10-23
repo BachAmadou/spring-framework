@@ -42,6 +42,13 @@ public class AccountServiceImpl implements AccountService{
         // set status to deleted
         account.setAccountStatus(AccountStatus.DELETED);
     }
+    @Override
+    public void activateAccount(UUID id) {
+        Account account = accountRepository.findById(id);
+
+        account.setAccountStatus(AccountStatus.ACTIVE);
+
+    }
 }
 
 

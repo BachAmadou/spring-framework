@@ -30,7 +30,6 @@ public class AccountController {
 
         return "account/index";
     }
-
     @GetMapping("/create-form")
     public String createAccount(Model model) {
         // we need to provide an empty account object
@@ -41,7 +40,6 @@ public class AccountController {
 
         return "account/create-account";
     }
-
     @PostMapping("/create")
     // we use @ModelAttribute("account") to get the account from the above createAccount method
     public String AddAccount(@ModelAttribute("account") Account account, Model model) {
@@ -50,8 +48,19 @@ public class AccountController {
         return "redirect:/index";
     }
     @GetMapping("/delete/{id}")
-    public String deleteAccount(@PathVariable("id")UUID id) {
+    public String getDeleteAccount(@PathVariable("id")UUID id){
+
         accountService.deleteAccount(id);
-        return "redirect:index";
+
+        return "redirect:/index";
+    }
+
+    @GetMapping("/activate/{id}")
+    public String activateAccount(@PathVariable("id") UUID id) {
+
+        accountService.activateAccount(id);
+
+        return "redirect:/index";
+
     }
 }
